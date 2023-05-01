@@ -182,7 +182,7 @@ Widget rowTitleText({required BuildContext context, required String text,require
                       text.toUpperCase(),
                       style: mediumLargeTextStyle(context).copyWith(
                           letterSpacing: 0.15,
-                          fontWeight : FontWeight.bold,
+                          fontWeight : FontWeight.w500,
                           color: Colors.black.withOpacity(0.9),
                           fontFamily: kMuktaBold),
                     ): titleText( context: context, text: text, color: Colors.black.withOpacity(0.7)),
@@ -194,7 +194,7 @@ Widget rowTitleText({required BuildContext context, required String text,require
             onTap : onTap,
             child: Text(
               "View all",
-              style: mediumTextStyle(context).copyWith(color: kOrangeColor),
+              style: mediumTextStyle(context).copyWith(color: kPrimaryColor),
             ),
           ),
         ),
@@ -533,3 +533,5 @@ Widget defaultDivider(){
                       ),
                     );
 }
+
+

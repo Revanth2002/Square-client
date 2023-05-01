@@ -2,6 +2,8 @@ import 'package:client/helpers/headers.dart';
 import 'package:client/screens/auth/login.dart';
 import 'package:client/screens/auth/otppage.dart';
 import 'package:client/screens/auth/splash.dart';
+import 'package:client/screens/home/addcard.dart';
+import 'package:client/screens/home/cardlist.dart';
 import 'package:client/screens/home/home.dart';
 
 
@@ -86,7 +88,7 @@ class _MyAppState extends State<MyApp> {
           if(snapshot.data != ""){
             return  LoginPage(); //AppScreenController(indexScreen: 0,) ;
           }else{
-          return HomePage();
+          return HomePage(); //AppScreenController(indexScreen:)
           }
         },
       ),
@@ -95,7 +97,9 @@ class _MyAppState extends State<MyApp> {
         SplashInfo.routeName: (context) => const SplashInfo(), //Path : /loginpage
         LoginPage.routeName: (context) => const LoginPage(), //Path : /loginpage
         OtpPage.routeName: (context) => OtpPage(phoneNumber: "",secretCode: ""), //Path : /loginpage
-
+        HomePage.routeName: (context) => HomePage(), //Path : /loginpage
+        AddCardPage.routeName: (context) => AddCardPage(), //Path : /loginpage
+        AllCardPage.routeName: (context) => AllCardPage(), //Path : /loginpage
       },
     );
   }

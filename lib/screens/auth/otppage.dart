@@ -78,6 +78,9 @@ class _OtpPageState extends State<OtpPage> {
                       color: kTitleColor,
                       fontFamily: kQuickSandBold),
                 ), 
+                mediumCustomSizedBox(context),
+                defaultDivider(),
+                mediumCustomSizedBox(context),
                 SizedBox(
                   height: isMobile(context) ? 35.0 : 40.0,
                 ),
