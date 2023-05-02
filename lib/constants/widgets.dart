@@ -305,6 +305,7 @@ Future bottomDialog({required context,double? height,required Widget widget}){
       required String hintTextField,
       required TextEditingController controller,
       required TextInputType textInputType,
+      int? maxLength,
       }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,6 +329,8 @@ Future bottomDialog({required context,double? height,required Widget widget}){
             style: const TextStyle(color: kBlackTextColor, fontSize: 17),
             keyboardType: textInputType,
             cursorColor: kPrimaryColor,
+            maxLength: maxLength ?? 4 ,
+            
             decoration: InputDecoration(
               hintText: hintTextField,
               hintStyle: mediumTextStyle(context).copyWith(color: kDarkGray),

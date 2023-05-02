@@ -6,6 +6,7 @@ import 'package:client/screens/home/addcard.dart';
 import 'package:client/screens/home/cardlist.dart';
 import 'package:client/screens/home/home.dart';
 import 'package:client/screens/home/profile.dart';
+import 'package:client/screens/home/setuppin.dart';
 
 
 void main() {
@@ -89,7 +90,7 @@ class _MyAppState extends State<MyApp> {
           if(snapshot.data != ""){
             return  LoginPage(); //AppScreenController(indexScreen: 0,) ;
           }else{
-          return MyProfilePage(); //AppScreenController(indexScreen:)
+          return SetupPinPage(); //AppScreenController(indexScreen:)
           }
         },
       ),
@@ -102,6 +103,7 @@ class _MyAppState extends State<MyApp> {
         AddCardPage.routeName: (context) => const AddCardPage(), //Path : /loginpage
         AllCardPage.routeName: (context) => const AllCardPage(), //Path : /loginpage
         MyProfilePage.routeName: (context) => const MyProfilePage(), //Path : /loginpage
+        SetupPinPage.routeName: (context) => const SetupPinPage(), //Path : /loginpage
       },
     );
   }
