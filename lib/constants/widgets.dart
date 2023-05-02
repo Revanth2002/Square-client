@@ -535,3 +535,73 @@ Widget defaultDivider(){
 }
 
 
+class BorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    double sh = size.height; // for convenient shortage
+    double sw = size.width; // for convenient shortage
+    double cornerSide = sh * 0.1; // desirable value for corners side
+
+    Paint paint = Paint()
+      ..color = kPrimaryColor
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.square;
+
+    Path path = Path()
+      ..moveTo(cornerSide, 0)
+      ..quadraticBezierTo(0, 0, 0, cornerSide)
+      ..moveTo(0, sh - cornerSide)
+      ..quadraticBezierTo(0, sh, cornerSide, sh)
+      ..moveTo(sw - cornerSide, sh)
+      ..quadraticBezierTo(sw, sh, sw, sh - cornerSide)
+      ..moveTo(sw, cornerSide)
+      ..quadraticBezierTo(sw, 0, sw - cornerSide, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(BorderPainter oldDelegate) => false;
+
+  @override
+  bool shouldRebuildSemantics(BorderPainter oldDelegate) => false;
+}
+
+  Widget profileTiles(
+      {required BuildContext context,
+        required String title,
+      required IconData icon,
+      required Function() onTap}) {
+    return Container(
+      padding:
+          EdgeInsets.symmetric(horizontal: kScreenMarginHorizontal(context)),
+      child: Column(
+        children: [
+          ListTile(
+            onTap: onTap,
+            leading: CircleAvatar(
+                maxRadius: isMobile(context) ? 16 : 18,
+                backgroundColor: kSecondaryColor,
+                child: Center(
+                    child: Icon(
+                  icon,
+                  color: kPrimaryColor,
+                  size: 16,
+                ))),
+            title: Text(
+              title,
+              style: const TextStyle(
+                fontFamily: kMuktaRegular,
+              ),
+            ),
+            trailing: const Icon(
+              Icons.arrow_right_rounded,
+              color: kPrimaryColor,
+            ),
+          ),
+          smallCustomSizedBox(context),
+        ],
+      ),
+    );
+  }
