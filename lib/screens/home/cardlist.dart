@@ -1,4 +1,5 @@
 import 'package:client/helpers/headers.dart';
+import 'package:client/screens/home/addcard.dart';
 
 class AllCardPage extends StatefulWidget {
   static const String routeName = allcard;
@@ -56,7 +57,18 @@ class _AllCardPageState extends State<AllCardPage> {
                           ],
                         ),
                       ),
-                      const Icon(Icons.add_card_outlined,
+                      GestureDetector(
+                         onTap: () => Navigator.push(
+                                            context,
+                                            CustomRightPageRoute(
+                                                page: const AddCardPage(),
+                                                routeName:
+                                                    addcard)),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Icon(Icons.add_card_outlined,
                           color: kPrimaryColor, size: 24),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
@@ -66,6 +78,9 @@ class _AllCardPageState extends State<AllCardPage> {
                               .copyWith(color: kPrimaryColor),
                         ),
                       ),
+                          ],
+                        ),
+                      )
                     ],
                   )),
               ListView.builder(

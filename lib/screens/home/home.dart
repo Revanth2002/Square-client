@@ -1,5 +1,9 @@
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/components/searchbox.dart';
+import 'package:client/screens/home/cardlist.dart';
+import 'package:client/screens/home/notifications.dart';
+import 'package:client/screens/home/profile.dart';
+import 'package:client/screens/home/transactions.dart';
 import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
@@ -27,22 +31,10 @@ class _HomePageState extends State<HomePage> {
   bool isCardAdded = true;
 
   final transferMoneyList = [
-    {
-      "name": "To Mobile Number",
-      "img" : "assets/images/send.png"
-    },
-    {
-      "name":"To Square ID",
-      "img" : "assets/images/contactless.png"
-    },
-    {
-      "name" : "Scan to Pay",
-      "img" : "assets/images/qr.png"
-    },
-    {
-      "name" : "Check Balance",
-      "img" : "assets/images/bank.png"
-    }
+    {"name": "To Mobile Number", "img": "assets/images/send.png"},
+    {"name": "To Square ID", "img": "assets/images/contactless.png"},
+    {"name": "Scan to Pay", "img": "assets/images/qr.png"},
+    {"name": "Check Balance", "img": "assets/images/bank.png"}
   ];
 
   @override
@@ -72,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                         ? size.width / 15
                         : size.width / 16;
 
-var imgDimension = 30.0;
+    var imgDimension = 30.0;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -102,15 +94,22 @@ var imgDimension = 30.0;
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/profile.png'),
-                                      fit: BoxFit.cover),
+                              GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    CustomRightPageRoute(
+                                        page: const MyProfilePage(),
+                                        routeName: profilepage)),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                    image: const DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/profile.png'),
+                                        fit: BoxFit.cover),
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -142,13 +141,11 @@ var imgDimension = 30.0;
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () {},
-                                        // onTap: () => Navigator.push(
-                                        //     context,
-                                        //     CustomRightPageRoute(
-                                        //         page: const NotificationPage(),
-                                        //         routeName:
-                                        //             notificationpage)),
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            CustomRightPageRoute(
+                                                page: const NotificationPage(),
+                                                routeName: notificationpage)),
                                         child: Container(
                                           height: 45,
                                           width: 45,
@@ -261,7 +258,9 @@ var imgDimension = 30.0;
                             obscureCardCvv: true,
                             isHolderNameVisible: true,
                             cardBgColor: Colors.white,
-                            backgroundImage: 'assets/images/cardbg.png',
+                            // backgroundImage: 'assets/images/cardbg.png',
+                            backgroundNetworkImage:
+                                "https://www.cardexpert.in/wp-content/uploads/2022/02/axis-atlas-banner.png",
                             isSwipeGestureEnabled: true,
                             onCreditCardWidgetChange:
                                 (CreditCardBrand creditCardBrand) {},
@@ -309,6 +308,11 @@ var imgDimension = 30.0;
                           mediumCustomSizedBox(context),
                           //bank accounts linked
                           ListTile(
+                            onTap: () => Navigator.push(
+                                context,
+                                CustomRightPageRoute(
+                                    page: const AllCardPage(),
+                                    routeName: allcard)),
                             tileColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -405,8 +409,8 @@ var imgDimension = 30.0;
                                           Padding(
                                             padding: EdgeInsets.only(
                                                 top: isMobile(context) ? 4 : 7),
-                                            child: Text(transferMoneyList[i]
-                                                ['name']!,
+                                            child: Text(
+                                                transferMoneyList[i]['name']!,
                                                 textAlign: TextAlign.center,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.clip,
@@ -421,7 +425,7 @@ var imgDimension = 30.0;
                         ],
                       ),
                     ),
-          mediumCustomSizedBox(context),
+                    mediumCustomSizedBox(context),
                     //Recent Transactions
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -433,47 +437,114 @@ var imgDimension = 30.0;
                           // style: mediumTextStyle(context),),
                           Container(
                               child: rowTitleText(
-                                  onTap: () {},
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      CustomRightPageRoute(
+                                          page: const AllTransactions(),
+                                          routeName: alltransactions)),
                                   context: context,
                                   isCapitalFont: false,
-                                  text: "Recent Transactions",
+                                  text: "Recent People",
                                   isViewAll: true)),
 
                           // mediumCustomSizedBox(context),
- ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 6,
-                        itemBuilder: (context, index) {
-                          return  Padding(
-                            padding: const EdgeInsets.symmetric(vertical : 4.0),
-                            child: ListTile(
-                              tileColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: const BorderSide(
-                                    color: kLavenderGrayColor, width: 0.5),
-                              ),
-                              leading: Image.asset(
-                                'assets/images/profile.png',
-                                height: 30,
-                                width: 30,
-                              ),
-                              title: Text("SM Logistices",
-                                  style: mediumTextStyle(context)),
-                              subtitle: Text("Debited",
-                                  style: smallTextStyle(context)),
-                              trailing: Text("-\$ 200.00",
-                                  style: mediumTextStyle(context)),
-                            ),
-                          );
-                        }),
+                          GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: smallMobile(context)
+                                          ? 0.8
+                                          : largeMobile(context)
+                                              ? 0.9
+                                              : 3.3 / 3,
+                                      crossAxisCount: smallMobile(context)
+                                          ? 4
+                                          : largeMobile(context)
+                                              ? 4
+                                              : isBetweenMT2(context)
+                                                  ? 4
+                                                  : isBetweenMT1(context)
+                                                      ? 5
+                                                      : 6,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10),
+                              itemCount: 6,
+                              itemBuilder: (BuildContext context, int i) {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: imgDimension,
+                                        width: imgDimension,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                          image: NetworkImage(
+                                            "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        )),
+                                        // child: Image.network(
+                                        //   "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                                        //   //transferMoneyList[i]['img']!,
+                                        //   fit: BoxFit.fill,
+                                        //   height: imgDimension,
+                                        //   width: imgDimension,
+                                        // ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: isMobile(context) ? 4 : 7),
+                                        child: Text("Aravind",
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.clip,
+                                            style: smallTextStyle(context)),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
 
+/*
+                          ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: 6,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4.0),
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: const BorderSide(
+                                          color: kLavenderGrayColor,
+                                          width: 0.5),
+                                    ),
+                                    leading: Image.asset(
+                                      'assets/images/profile.png',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                    title: Text("SM Logistices",
+                                        style: mediumTextStyle(context)),
+                                    subtitle: Text("Debited",
+                                        style: smallTextStyle(context)),
+                                    trailing: Text("-\$ 200.00",
+                                        style: mediumTextStyle(context)),
+                                  ),
+                                );
+                              }), */
                         ],
                       ),
                     ),
-
-                   
                   ],
                 )),
           ),

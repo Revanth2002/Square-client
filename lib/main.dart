@@ -1,12 +1,16 @@
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/auth/login.dart';
 import 'package:client/screens/auth/otppage.dart';
+import 'package:client/screens/auth/personal.dart';
 import 'package:client/screens/auth/splash.dart';
 import 'package:client/screens/home/addcard.dart';
 import 'package:client/screens/home/cardlist.dart';
 import 'package:client/screens/home/home.dart';
+import 'package:client/screens/home/notifications.dart';
+import 'package:client/screens/home/peopletransaction.dart';
 import 'package:client/screens/home/profile.dart';
 import 'package:client/screens/home/setuppin.dart';
+import 'package:client/screens/home/transactions.dart';
 
 
 void main() {
@@ -90,7 +94,7 @@ class _MyAppState extends State<MyApp> {
           if(snapshot.data != ""){
             return  LoginPage(); //AppScreenController(indexScreen: 0,) ;
           }else{
-          return SetupPinPage(); //AppScreenController(indexScreen:)
+          return SearchPeoplePage(isOneTimePop: false,); //AppScreenController(indexScreen:)
           }
         },
       ),
@@ -104,6 +108,11 @@ class _MyAppState extends State<MyApp> {
         AllCardPage.routeName: (context) => const AllCardPage(), //Path : /loginpage
         MyProfilePage.routeName: (context) => const MyProfilePage(), //Path : /loginpage
         SetupPinPage.routeName: (context) => const SetupPinPage(), //Path : /loginpage
+        AllTransactions.routeName: (context) => const AllTransactions(), //Path : /loginpage
+        NotificationPage.routeName: (context) => const NotificationPage(), //Path : /loginpage
+        PeopleTransactionPage.routeName: (context) => const PeopleTransactionPage(), //Path : /loginpage
+        PersonalInfoPage.routeName: (context) => const PersonalInfoPage(), //Path : /loginpage
+        SearchPeoplePage.routeName: (context) => SearchPeoplePage(isOneTimePop: false), //Path : /loginpage
       },
     );
   }

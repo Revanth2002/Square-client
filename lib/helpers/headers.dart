@@ -15,3 +15,5 @@ export 'package:flutter_credit_card/credit_card_form.dart';
 export 'package:flutter_credit_card/credit_card_model.dart';
 export 'package:flutter_credit_card/credit_card_widget.dart';
 export 'package:flutter_credit_card/flutter_credit_card.dart';
+export 'package:client/screens/search/searchbox.dart';
+export 'package:client/screens/search/searchpeople.dart';

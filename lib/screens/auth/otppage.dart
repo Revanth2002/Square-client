@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:client/helpers/headers.dart';
+import 'package:client/screens/home/home.dart';
 
 class OtpPage extends StatefulWidget {
   static const routeName = otppage;
@@ -192,6 +193,13 @@ class _OtpPageState extends State<OtpPage> {
                          isOutline: false,btnColor: kPrimaryColor,
                           context: context, onTap: () {
                             if (_otpController.text.length == 6) {
+                              //Navigate to Home Page
+                              Navigator.push(
+                          context,
+                          CustomRightPageRoute(
+                              page: HomePage(),
+                              routeName: homepage));
+
                               //overlayLoader(context);
                               //_otpVerificationMethod(otp: _otpController.text);
                             } else {

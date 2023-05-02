@@ -1,4 +1,5 @@
 import 'package:client/helpers/headers.dart';
+import 'package:client/screens/home/setuppin.dart';
 
 class MyProfilePage extends StatefulWidget {
   static const String routeName = profilepage;
@@ -117,7 +118,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   context: context,
                   title: "Setup Pin",
                   icon: Icons.lock,
-                  onTap: () {}),
+                  onTap: () => Navigator.push(
+                                            context,
+                                            CustomRightPageRoute(
+                                                page: const SetupPinPage(),
+                                                routeName:
+                                                    setuppin)),
+                  ),
               profileTiles(
                   context: context,
                   title: "Help & Support",
