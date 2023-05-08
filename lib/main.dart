@@ -2,6 +2,7 @@ import 'package:client/helpers/headers.dart';
 import 'package:client/screens/auth/login.dart';
 import 'package:client/screens/auth/otppage.dart';
 import 'package:client/screens/auth/personal.dart';
+import 'package:client/screens/auth/registerpage.dart';
 import 'package:client/screens/auth/splash.dart';
 import 'package:client/screens/home/addcard.dart';
 import 'package:client/screens/home/cardlist.dart';
@@ -92,9 +93,9 @@ class _MyAppState extends State<MyApp> {
         builder: (context,snapshot) {
            if(!snapshot.hasData) return customCircularProgress() ;
           if(snapshot.data != ""){
-            return  LoginPage(); //AppScreenController(indexScreen: 0,) ;
+            return  HomePage(); //AppScreenController(indexScreen: 0,) ;
           }else{
-          return SearchPeoplePage(isOneTimePop: false,); //AppScreenController(indexScreen:)
+          return LoginPage(); //AppScreenController(indexScreen:)
           }
         },
       ),
@@ -102,7 +103,8 @@ class _MyAppState extends State<MyApp> {
         //Auth Screens
         SplashInfo.routeName: (context) => const SplashInfo(), //Path : /loginpage
         LoginPage.routeName: (context) => const LoginPage(), //Path : /loginpage
-        OtpPage.routeName: (context) => OtpPage(phoneNumber: "",secretCode: ""), //Path : /loginpage
+        RegisterPage.routeName: (context) => const RegisterPage(), //Path : /loginpage
+        OtpPage.routeName: (context) => OtpPage(phoneNumber: "",pid: ""), //Path : /loginpage
         HomePage.routeName: (context) => HomePage(), //Path : /loginpage
         AddCardPage.routeName: (context) => const AddCardPage(), //Path : /loginpage
         AllCardPage.routeName: (context) => const AllCardPage(), //Path : /loginpage

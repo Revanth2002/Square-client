@@ -2,6 +2,7 @@ import 'package:client/helpers/headers.dart';
 import 'package:client/screens/components/searchbox.dart';
 import 'package:client/screens/home/cardlist.dart';
 import 'package:client/screens/home/notifications.dart';
+import 'package:client/screens/home/peopletransaction.dart';
 import 'package:client/screens/home/profile.dart';
 import 'package:client/screens/home/transactions.dart';
 import 'package:flutter_credit_card/credit_card_brand.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     {"name": "To Mobile Number", "img": "assets/images/send.png"},
     {"name": "To Square ID", "img": "assets/images/contactless.png"},
     {"name": "Scan to Pay", "img": "assets/images/qr.png"},
-    {"name": "Check Balance", "img": "assets/images/bank.png"}
+    {"name": "Transactions", "img": "assets/images/bank.png"}
   ];
 
   @override
@@ -440,7 +441,7 @@ class _HomePageState extends State<HomePage> {
                                   onTap: () => Navigator.push(
                                       context,
                                       CustomRightPageRoute(
-                                          page: const AllTransactions(),
+                                          page: const SearchPeoplePage(isOneTimePop: false,),
                                           routeName: alltransactions)),
                                   context: context,
                                   isCapitalFont: false,
@@ -472,7 +473,11 @@ class _HomePageState extends State<HomePage> {
                               itemCount: 6,
                               itemBuilder: (BuildContext context, int i) {
                                 return GestureDetector(
-                                  onTap: () {},
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      CustomRightPageRoute(
+                                          page: const PeopleTransactionPage(),
+                                          routeName: peopletransactionpage)),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,

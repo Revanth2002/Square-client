@@ -1,13 +1,14 @@
 import 'dart:async';
 
+import 'package:client/apis/auth.dart';
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/home/home.dart';
 
 class OtpPage extends StatefulWidget {
   static const routeName = otppage;
-  String secretCode;
+  String pid;
   final String phoneNumber;
-  OtpPage({ Key? key ,required this.secretCode,required this.phoneNumber}) : super(key: key);
+  OtpPage({ Key? key ,required this.pid,required this.phoneNumber}) : super(key: key);
 
   @override
   _OtpPageState createState() => _OtpPageState();
@@ -19,7 +20,7 @@ class _OtpPageState extends State<OtpPage> {
   late Timer _timer;
 
   final TextEditingController _otpController = TextEditingController();
-  //final AuthenticationAPI _authapi = AuthenticationAPI();
+  final AuthenticationAPI _authapi = AuthenticationAPI();
 
   @override
   @override
@@ -28,15 +29,16 @@ class _OtpPageState extends State<OtpPage> {
       startTimer();
     }    
 
-/*
   _otpVerificationMethod({required String otp})async{
-    return await _authapi.postOtpVerification(context: context, otp: otp, code: widget.secretCode).then((res){
+    return await _authapi.postOtpVerification(context: context, otp: otp, pid: widget.pid).then((res){
       if(res==false){
-       Loader.hide(); 
+      //  Loader.hide();
+      print("error"); 
       }
     });
   }
 
+/*
   _postResendOtp() async {
     return await _authapi.postResendOtp(
         context: context, phonenumber: widget.phoneNumber).then((res) {
@@ -146,6 +148,7 @@ class _OtpPageState extends State<OtpPage> {
                         //   ),
                         // ),
                       ),
+                      /*
                       Container(
                         height: 45,
                         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -188,20 +191,14 @@ class _OtpPageState extends State<OtpPage> {
                                     ],
                         ),
                       ),
+                      */
                       mediumCustomSizedBox(context),
                    primaryBtn(
                          isOutline: false,btnColor: kPrimaryColor,
                           context: context, onTap: () {
                             if (_otpController.text.length == 6) {
-                              //Navigate to Home Page
-                              Navigator.push(
-                          context,
-                          CustomRightPageRoute(
-                              page: HomePage(),
-                              routeName: homepage));
-
-                              //overlayLoader(context);
-                              //_otpVerificationMethod(otp: _otpController.text);
+                              overlayLoader(context);
+                              _otpVerificationMethod(otp: _otpController.text);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(customsnackErrorBar(context, "Please enter a proper 6 digit otp"));
                             }

@@ -1,5 +1,7 @@
+import 'package:client/apis/auth.dart';
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/auth/otppage.dart';
+import 'package:client/screens/auth/registerpage.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -13,12 +15,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
 
-  // final AuthenticationAPI _authapi = AuthenticationAPI();
+  final AuthenticationAPI _authapi = AuthenticationAPI();
 
-  // _postLoginUser({required String phonenumber}) async {
-  //   return await _authapi.postLoginUser(
-  //       context: context, phonenumber: phonenumber);
-  // }
+  _postLoginUser({required String phonenumber}) async {
+    return await _authapi.postLoginUser(
+        context: context, phonenumber: phonenumber);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,13 @@ class _LoginPageState extends State<LoginPage> {
                             color: kGraycolor,
                             fontSize: 13.0,
                           ),
+                          prefix: Text(
+                            "+91 ",
+                            style: TextStyle(
+                                color: kGraycolor,
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.w500),
+                          ),
                           filled: true,
                           fillColor: Colors.white,
                           enabledBorder: OutlineInputBorder(
@@ -99,20 +108,52 @@ class _LoginPageState extends State<LoginPage> {
                           customsnackErrorBar(
                               context, "Please enter your phone number")); 
                         } else {
-                         Navigator.push(
-                          context,
-                          CustomRightPageRoute(
-                              page: OtpPage(phoneNumber: "",secretCode: ""),
-                              routeName: otppage));
-                          //overlayLoader(context);
-                          //_postLoginUser(phonenumber: _phoneNumberController.text.trim());
+                          overlayLoader(context);
+                          _postLoginUser(phonenumber: _phoneNumberController.text.trim());
+                        //  Navigator.push(
+                        //   context,
+                        //   CustomRightPageRoute(
+                        //       page: OtpPage(phoneNumber: "",pid: ""),
+                        //       routeName: otppage));
                         }
                       },
                       btnText: "Get OTP",
                       vertical: 20,
                     ),
                     mediumCustomSizedBox(context),
-                   
+                   GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          CustomRightPageRoute(
+                              page: RegisterPage(),
+                              routeName: registerpage)),
+                        child: Center(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    kDefaultScreenPaddingHorizontal(context),
+                                vertical: kDefaultScreenPaddingVertical(context)),
+                            child: RichText(
+                              text: TextSpan(
+                                style: smallTextStyle(context).copyWith(
+                                  height: 1.2,
+                                  color: kGraycolor,
+                                  fontFamily: kMuktaRegular,
+                                ),
+                                text: 'New to zeropay ?',
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: ' Register ',
+                                      style: smallTextStyle(context).copyWith(
+                                          color: Colors.blue,
+                                          fontFamily: kMuktaBold,
+                                          decoration: TextDecoration.underline)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                   ],
                 )
               ],

@@ -12,3 +12,5 @@ const String peopletransactionpage = "/peopletransactionpage";
 const String personalinfopage = "/personalinfopage";
 const String searchpeoplepage = "/searchpeoplepage";
 const String searchdisplaypage = "/searchdisplaypage";
+const String passwordpage = "/passwordpage";
+const String registerpage = "/registerpage";
