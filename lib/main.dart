@@ -6,11 +6,16 @@ import 'package:client/screens/auth/registerpage.dart';
 import 'package:client/screens/auth/splash.dart';
 import 'package:client/screens/home/addcard.dart';
 import 'package:client/screens/home/cardlist.dart';
+import 'package:client/screens/home/checkbalance.dart';
 import 'package:client/screens/home/home.dart';
 import 'package:client/screens/home/notifications.dart';
+import 'package:client/screens/home/paypin.dart';
 import 'package:client/screens/home/peopletransaction.dart';
 import 'package:client/screens/home/profile.dart';
+import 'package:client/screens/home/scanqr.dart';
+import 'package:client/screens/home/sendmoney.dart';
 import 'package:client/screens/home/setuppin.dart';
+import 'package:client/screens/home/test.dart';
 import 'package:client/screens/home/transactions.dart';
 
 
@@ -93,9 +98,10 @@ class _MyAppState extends State<MyApp> {
         builder: (context,snapshot) {
            if(!snapshot.hasData) return customCircularProgress() ;
           if(snapshot.data != ""){
-            return  HomePage(); //AppScreenController(indexScreen: 0,) ;
+            return  const HomePage();
           }else{
-          return LoginPage(); //AppScreenController(indexScreen:)
+            return const SplashInfo();
+            //SendMoneyPage(recImg: "https://pbs.twimg.com/profile_images/1485050791488483328/UNJ05AV8_400x400.jpg",recName: "Karthi A",recPhone: "8097567892",recPid: "",); //AppScreenController(indexScreen:)
           }
         },
       ),
@@ -109,12 +115,16 @@ class _MyAppState extends State<MyApp> {
         AddCardPage.routeName: (context) => const AddCardPage(), //Path : /loginpage
         AllCardPage.routeName: (context) => const AllCardPage(), //Path : /loginpage
         MyProfilePage.routeName: (context) => const MyProfilePage(), //Path : /loginpage
-        SetupPinPage.routeName: (context) => const SetupPinPage(), //Path : /loginpage
+        SetupPinPage.routeName: (context) => const SetupPinPage(isPinSetup: true), //Path : /loginpage
         AllTransactions.routeName: (context) => const AllTransactions(), //Path : /loginpage
         NotificationPage.routeName: (context) => const NotificationPage(), //Path : /loginpage
-        PeopleTransactionPage.routeName: (context) => const PeopleTransactionPage(), //Path : /loginpage
+        PeopleTransactionPage.routeName: (context) => const PeopleTransactionPage(toPid: ""), //Path : /loginpage
         PersonalInfoPage.routeName: (context) => const PersonalInfoPage(), //Path : /loginpage
-        SearchPeoplePage.routeName: (context) => SearchPeoplePage(isOneTimePop: false), //Path : /loginpage
+        SearchPeoplePage.routeName: (context) => SearchPeoplePage(isOneTimePop: false,isMobileNumber: false), //Path : /loginpage
+        SendMoneyPage.routeName: (context) => const SendMoneyPage(recImg: "",recName: "",recPhone: "",recPid: ""), //Path : /loginpage
+        PayPinPage.routeName: (context) => const PayPinPage(recAmt: "",recPid: ""), //Path : /loginpage
+        ScanQrPage.routeName: (context) => const ScanQrPage(), //Path : /loginpage
+        CheckBalancePage.routeName: (context) => const CheckBalancePage(), //Path : /loginpage
       },
     );
   }

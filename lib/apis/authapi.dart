@@ -3,6 +3,7 @@ import 'package:client/helpers/dioheaders.dart';
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/auth/login.dart';
 import 'package:client/screens/auth/otppage.dart';
+import 'package:client/screens/auth/splash.dart';
 import 'package:client/screens/home/home.dart';
 
 class AuthenticationAPI {
@@ -90,7 +91,7 @@ class AuthenticationAPI {
     } on DioError catch (e) {
       Loader.hide();
         if(e.response?.statusCode == 409){
-          ScaffoldMessenger.of(context).showSnackBar(customsnackErrorBar(context, "Number already exists.Try with new number"));
+          ScaffoldMessenger.of(context).showSnackBar(customsnackErrorBar(context, "Number or email already exists.Try with new number"));
           return false;
         }
         else if(e.response?.statusCode == 406){
@@ -108,7 +109,7 @@ class AuthenticationAPI {
 
  performLogOut(BuildContext context)async{
     await flutterSecureStorage.delete(key: "BEARERTOKEN");
-    return Navigator.pushReplacement(context, CustomSimplePageRoute(page: LoginPage(), routeName: loginpage));
+    return Navigator.pushReplacement(context, CustomSimplePageRoute(page: SplashInfo(), routeName: splashinfo));
   }
 
 }

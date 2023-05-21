@@ -1,4 +1,4 @@
-import 'package:client/apis/auth.dart';
+import 'package:client/apis/authapi.dart';
 import 'package:client/helpers/headers.dart';
 
 class RegisterPage extends StatefulWidget {

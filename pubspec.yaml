@@ -45,6 +45,12 @@ dependencies:
   url_launcher: ^6.0.20 #IOS setup need to check
   flutter_credit_card: ^3.0.6
   dotted_border: ^2.0.0+3
+  pin_code_fields: ^7.4.0
+  qr_flutter: ^4.0.0
+  # qr_code_scanner: ^1.0.1
+  # flutter_barcode_scanner: ^2.0.0
+  ai_barcode_scanner: ^0.0.6
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

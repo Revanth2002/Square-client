@@ -1,8 +1,10 @@
+import 'package:client/apis/setupapi.dart';
 import 'package:client/helpers/headers.dart';
 
 class SetupPinPage extends StatefulWidget {
   static const String routeName = setuppin;
-  const SetupPinPage({Key? key}) : super(key: key);
+  final bool isPinSetup;
+  const SetupPinPage({Key? key, required this.isPinSetup}) : super(key: key);
 
   @override
   _SetupPinPageState createState() => _SetupPinPageState();
@@ -11,6 +13,11 @@ class SetupPinPage extends StatefulWidget {
 class _SetupPinPageState extends State<SetupPinPage> {
   final TextEditingController _newpinController = TextEditingController();
   final TextEditingController _oldpinController = TextEditingController();
+
+  final SetupPinAPI _setupPinAPI = SetupPinAPI();
+  _postSetupPin({required BuildContext context,required String newPin,required String oldPin})async {
+    return await _setupPinAPI.postSetupPin(context: context, newPin: newPin, oldPin: oldPin);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +51,55 @@ class _SetupPinPageState extends State<SetupPinPage> {
                   
               personalInfoDynamicTitle(
                   context: context,
-                  title: "Old Pin",
+                  title: widget.isPinSetup ? "Old Pin" : "New Pin",
                   controller: _oldpinController,
-                  hintTextField: "Enter your old pin",
+                  hintTextField: widget.isPinSetup ? "Enter your old pin" : "Enter your new pin",
                   textInputType: TextInputType.number),
               mediumCustomSizedBox(context),
               personalInfoDynamicTitle(
                   context: context,
-                  title: "New Pin",
+                  title: widget.isPinSetup ? "New Pin" : "Confirm Pin",
                   controller: _newpinController,
-                  hintTextField: "Enter your new pin",
+                  hintTextField: widget.isPinSetup ? "Enter your new pin" : "Confirm your new pin",
                   textInputType: TextInputType.number),
               mediumCustomSizedBox(context),
               mediumCustomSizedBox(context),
               primaryBtn(
                   context: context,
-                  onTap: () {},
-                  btnText: "Change Pin",
+                  onTap: () {
+                    if (!widget.isPinSetup) {
+                      if (_oldpinController.text.isEmpty ||
+                          _newpinController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          customsnackErrorBar(
+                              context, "Please enter your new pin and confirm pin")); 
+                      } else if (_oldpinController.text !=
+                          _newpinController.text) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                          customsnackErrorBar(
+                              context, "Pin does not match")); 
+                      } else {
+                        overlayLoader(context);
+                        _postSetupPin(context: context, newPin: _newpinController.text, oldPin: _oldpinController.text);
+                      }
+                    }else {
+                      if (_newpinController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          customsnackErrorBar(
+                              context, "Please enter your new pin")); 
+                      }else if (_oldpinController.text.isEmpty){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          customsnackErrorBar(
+                              context, "Please enter your old pin"));
+                      }
+                       else {
+                        overlayLoader(context);
+                        _postSetupPin(context: context, newPin: _newpinController.text, oldPin: _oldpinController.text);
+                      }
+                    }
+                    
+                  },
+                  btnText: widget.isPinSetup ? "Change Pin" : "Set Pin",
                   isOutline: true)
             ],
           ),

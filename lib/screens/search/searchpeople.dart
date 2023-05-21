@@ -1,9 +1,12 @@
+import 'package:client/apis/searchapi.dart';
 import 'package:client/helpers/headers.dart';
+import 'package:client/screens/home/peopletransaction.dart';
 
 class SearchPeoplePage extends StatefulWidget {
   static const String routeName = searchpeoplepage;
   final bool isOneTimePop;
-  const SearchPeoplePage({Key? key, required this.isOneTimePop})
+  final bool isMobileNumber;
+  const SearchPeoplePage({Key? key, required this.isOneTimePop, required this.isMobileNumber})
       : super(key: key);
 
   @override
@@ -12,8 +15,25 @@ class SearchPeoplePage extends StatefulWidget {
 
 class _SearchPeoplePageState extends State<SearchPeoplePage> {
   final TextEditingController _searchController = TextEditingController();
+  Future? _searchResultsFuture;
 
   String searchQuery = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.text = "";
+  }
+
+  final SearchAPI _searchAPI = SearchAPI();
+
+  Future<void> _performSearchResults({required String query})async {
+    setState(() {
+      _searchResultsFuture = _searchAPI.getSearchResults(context: context, query: query);
+    });
+    // return _searchAPI.getSearchResults(context: context, query: query);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +56,13 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                 children: [
                   mediumCustomSizedBox(context),
                   Text(
-                    "Send Money to your friends",
+                    widget.isMobileNumber ? "Send Money using Mobile" : "Send Money to your friends",
                     style: ultraLargeTextStyle(context)
                         .copyWith(fontFamily: kMuktaRegular),
                   ),
                   smallCustomSizedBox(context),
                   Text(
-                    "Start searching now",
+                    widget.isMobileNumber ? "Start typing a number" :  "Start searching now",
                     style:
                         mediumLargeTextStyle(context).copyWith(color: kDimGray
                             //fontFamily : kQuickSandBold
@@ -51,21 +71,14 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                   mediumCustomSizedBox(context),
                   smallCustomSizedBox(context),
                   DynamicSearch(
+                    placeholder: widget.isMobileNumber ? "Search using number" : "Search for a user",
                       controller: _searchController,
                       performSearch: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                        // if(widget.isOneTimePop){
-                        //   Navigator.of(context).pop();
-                        // }else{
-                        //  int count = 0;
-                        //   Navigator.of(context).popUntil((_) => count++ >= 2);
-                        // }
-                        // Navigator.push(context, CustomRightPageRoute(page: DoctorsDisplayPage(
-                        //       searchType: "first",
-                        //       searchQuery: _searchController.text.trim(),
-                        //       ), routeName: doctordisplay));
+                        // setState(() {
+                        //   searchQuery = value;
+                        // });
+                        overlayLoader(context);
+                        _performSearchResults(query: value);
                       }),
                 ],
               ),
@@ -84,25 +97,37 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                       style: mediumLargeTextStyle(context),
                     ),
                   ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kDefaultScreenPaddingHorizontal(context),
-                      vertical: kDefaultScreenPaddingVertical(context)),
-                  child: Center(
-                    child: customCircularProgress(),
-                  ),
-                ),
-            ListView.builder(
+                // Container(
+                //   padding: EdgeInsets.symmetric(
+                //       horizontal: kDefaultScreenPaddingHorizontal(context),
+                //       vertical: kDefaultScreenPaddingVertical(context)),
+                //   child: Center(
+                //     child: customCircularProgress(),
+                //   ),
+                // ),
+
+                
+            FutureBuilder(
+              future: _searchResultsFuture,
+              builder: (context, snapshot) {
+                if(snapshot.hasData){
+                  return snapshot.data['users'].length > 0 ? ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: snapshot.data['users'].length,
               itemBuilder: (BuildContext context, int i) {
                 return Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
                   child: ListTile(
-                    onTap: () {},
+                     onTap: () => Navigator.push(
+                                                      context,
+                                                      CustomRightPageRoute(
+                                                          page:
+                                                              PeopleTransactionPage(toPid: snapshot.data['users'][i]['pid']),
+                                                          routeName:
+                                                              peopletransactionpage)),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -111,11 +136,11 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                     leading: Container(
                       height: 30,
                       width: 30,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             image: NetworkImage(
-                              "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                              snapshot.data['users'][i]['img'],
                             ),
                             fit: BoxFit.cover,
                           )),
@@ -132,13 +157,34 @@ class _SearchPeoplePageState extends State<SearchPeoplePage> {
                     //     height: 30,
                     //     width: 30,
                     // ),
-                    title: Text("Aravind S", style: mediumTextStyle(context)),
+                    title: Text(snapshot.data['users'][i]['name'], style: mediumTextStyle(context)),
                     subtitle:
-                        Text("1234567890", style: smallTextStyle(context)),
+                        Text(snapshot.data['users'][i]['mobile'], style: smallTextStyle(context)),
                   ),
                 );
               },
+            ) : Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: kDefaultScreenPaddingHorizontal(context),
+                        vertical: kDefaultScreenPaddingVertical(context)),
+                    child: Text(
+                      "No Search Results Found",
+                      style: mediumLargeTextStyle(context),
+                    ),
+                  );
+                }else if (snapshot.hasError) {
+                    return defaultErrordialog(
+                        context: context,
+                        errorCode: ES_0060,
+                        message: "Something went wrong.Try again Later");
+                  }
+                  return Container();
+              },
             )
+            
+          
+          
+          
           ],
         ),
       ),

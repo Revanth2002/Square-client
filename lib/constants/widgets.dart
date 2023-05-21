@@ -80,20 +80,19 @@ mediumTextStyle(context) {
 
 smallTextStyle(context) {
   return TextStyle(
-
       fontFamily: kQuickSandRegular,
       fontSize: isMobile(context) ? 13.0 : 15.0,
       color: kGraycolor);
 }
 
 /* ---------------Custom Divider Gray Box--------------------------------*/
-kLargeDivider(context,{Color? dividerClr}) {
+kLargeDivider(context, {Color? dividerClr}) {
   return Container(
       decoration: BoxDecoration(color: dividerClr ?? kLavenderGrayColor),
       height: isMobile(context) ? 11.0 : 13.0);
 }
 
-kMediumDivider(context,{Color? dividerClr}) {
+kMediumDivider(context, {Color? dividerClr}) {
   return Container(
       decoration: BoxDecoration(color: dividerClr ?? kLavenderGrayColor),
       height: isMobile(context) ? 6.0 : 9.0);
@@ -127,7 +126,10 @@ Widget smallCustomSizedBox(context) {
 
 /* ---------------To check if the value is null or empty--------------------------------*/
 isEmptyOrNull(var x) {
-  if ((x.toString().isEmpty) || (x == null) || (x.toString() == "null") || (x.toString() == "None")) {
+  if ((x.toString().isEmpty) ||
+      (x == null) ||
+      (x.toString() == "null") ||
+      (x.toString() == "None")) {
     return true;
   } else {
     return false;
@@ -162,40 +164,202 @@ Widget titleText(
     required String text,
     required Color color}) {
   return Text(text,
-      softWrap: true, style: mediumLargeTextStyle(context).copyWith(color: color,fontSize: isMobile(context) ? 18.0 : 21.0,));
+      softWrap: true,
+      style: mediumLargeTextStyle(context).copyWith(
+        color: color,
+        fontSize: isMobile(context) ? 18.0 : 21.0,
+      ));
 }
 
-Widget mediumTitleText({required BuildContext context, required String text, required Color color}) {
+Widget mediumTitleText(
+    {required BuildContext context,
+    required String text,
+    required Color color}) {
   return Text(text,
-      softWrap: true, style: mediumTextStyle(context).copyWith(color: color,fontSize: isMobile(context) ? 18.0 : 21.0,));
+      softWrap: true,
+      style: mediumTextStyle(context).copyWith(
+        color: color,
+        fontSize: isMobile(context) ? 18.0 : 21.0,
+      ));
 }
 
 /*------------------Title Text with View all Btn-------------------*/
-Widget rowTitleText({required BuildContext context, required String text,required bool isViewAll,required bool isCapitalFont,required Function() onTap}) {
+Widget rowTitleText(
+    {required BuildContext context,
+    required String text,
+    required bool isViewAll,
+    required bool isCapitalFont,
+    required Function() onTap}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
         flex: 3,
-        child: isCapitalFont == true ? Text(
-                      text.toUpperCase(),
-                      style: mediumLargeTextStyle(context).copyWith(
-                          letterSpacing: 0.15,
-                          fontWeight : FontWeight.w500,
-                          color: Colors.black.withOpacity(0.9),
-                          fontFamily: kMuktaBold),
-                    ): titleText( context: context, text: text, color: Colors.black.withOpacity(0.7)),
+        child: isCapitalFont == true
+            ? Text(
+                text.toUpperCase(),
+                style: mediumLargeTextStyle(context).copyWith(
+                    letterSpacing: 0.15,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black.withOpacity(0.9),
+                    fontFamily: kMuktaBold),
+              )
+            : titleText(
+                context: context,
+                text: text,
+                color: Colors.black.withOpacity(0.7)),
       ),
-      if(isViewAll==true) Expanded(
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: GestureDetector(
-            onTap : onTap,
-            child: Text(
-              "View all",
-              style: mediumTextStyle(context).copyWith(color: kPrimaryColor),
+      if (isViewAll == true)
+        Expanded(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: onTap,
+              child: Text(
+                "View all",
+                style: mediumTextStyle(context).copyWith(color: kPrimaryColor),
+              ),
             ),
+          ),
+        )
+    ],
+  );
+}
+
+/* ------------------ Bottom Dialog Pop Up --------------------------------*/
+/// This Widgets pops up from bottom with contents inside
+Future bottomDialog(
+    {required context, double? height, required Widget widget}) {
+  var size = sizeMedia(context);
+  return showGeneralDialog(
+    barrierDismissible: false,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: const Duration(milliseconds: 100),
+    context: context,
+    pageBuilder: (context, anim1, anim2) {
+      return Scaffold(
+        backgroundColor: Colors.black.withOpacity(0.1),
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: height ?? 200,
+            width: size.width,
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 35,
+                      padding: const EdgeInsets.only(top: 8, right: 10),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: const Icon(
+                              Icons.cancel,
+                              color: kPrimaryColor,
+                              size: 22,
+                            )),
+                      ),
+                    ),
+                    Expanded(child: widget)
+                  ],
+                ),
+              ],
+            ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+    },
+    transitionBuilder: (context, anim1, anim2, child) {
+      return SlideTransition(
+        position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0))
+            .animate(anim1),
+        child: child,
+      );
+    },
+  );
+}
+
+/*-------------------------Doctor Tile Content------------------------------*/
+Widget doctorTileContent(
+    {required BuildContext context,
+    required IconData icon,
+    required String title,
+    required Color bgColor,
+    required Color iconColor}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Container(
+        height: isMobile(context) ? 20 : 25,
+        width: isMobile(context) ? 20 : 25,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: bgColor),
+        child: Icon(
+          icon,
+          color: iconColor,
+          size: 14,
+        ),
+      ),
+      RotatedBox(
+        quarterTurns: 1,
+        child: smallCustomSizedBox(context),
+      ),
+      Text(title,
+          style: smallTextStyle(context).copyWith(fontFamily: kMuktaBold)),
+    ],
+  );
+}
+
+/* --------------Editable Text Field Custom ------------*/
+Widget personalInfoDynamicTitle({
+  required BuildContext context,
+  required String title,
+  required String hintTextField,
+  required TextEditingController controller,
+  required TextInputType textInputType,
+  int? maxLength,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      mediumCustomSizedBox(context),
+      Text(
+        title,
+        style: mediumTextStyle(context).copyWith(letterSpacing: 0.2),
+      ),
+      smallCustomSizedBox(context),
+      Container(
+        height: 45,
+        decoration: BoxDecoration(
+          color: kLightLavengerGrayColor,
+          // border: Border.all(color: kPrimaryColor, width: 1),
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: TextFormField(
+          controller: controller,
+          style: const TextStyle(color: kBlackTextColor, fontSize: 17),
+          keyboardType: textInputType,
+          cursorColor: kPrimaryColor,
+          maxLength: maxLength ?? 4,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          ],
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: hintTextField,
+            hintStyle: mediumTextStyle(context).copyWith(color: kDarkGray),
+            border: InputBorder.none,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
           ),
         ),
       )
@@ -203,170 +367,38 @@ Widget rowTitleText({required BuildContext context, required String text,require
   );
 }
 
-/* ------------------ Bottom Dialog Pop Up --------------------------------*/
-/// This Widgets pops up from bottom with contents inside
-Future bottomDialog({required context,double? height,required Widget widget}){
-  var size = sizeMedia(context);
-  return showGeneralDialog(
-      barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: const Duration(milliseconds: 100),
-      context: context,
-      pageBuilder: (context, anim1, anim2) {
-        return Scaffold(
-          backgroundColor:  Colors.black.withOpacity(0.1), 
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: height ?? 200,
-              width: size.width,
-              child: Stack(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 35,
-                                      padding:
-                                          const EdgeInsets.only(top: 8, right: 10),
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: GestureDetector(
-                                            onTap: () => Navigator.pop(context),
-                                            child: const Icon(
-                                              Icons.cancel,
-                                              color: kPrimaryColor,
-                                              size: 22,
-                                            )),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: widget
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        );
-      },
-      transitionBuilder: (context, anim1, anim2, child) {
-        return SlideTransition(
-          position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0)).animate(anim1),
-          child: child,
-        );
-      },
-    );
-}
-
-
-/*-------------------------Doctor Tile Content------------------------------*/
-  Widget doctorTileContent(
-      {required BuildContext context,
-      required IconData icon,
-      required String title,
-      required Color bgColor,
-      required Color iconColor}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          height: isMobile(context) ? 20 : 25,
-          width: isMobile(context) ? 20 : 25,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: bgColor),
-          child: Icon(
-            icon,
-            color: iconColor,
-            size: 14,
-          ),
-        ),
-        RotatedBox(
-          quarterTurns: 1,
-          child: smallCustomSizedBox(context),
-        ),
-        Text(title,
-            style: smallTextStyle(context).copyWith(fontFamily: kMuktaBold)),
-      ],
-    );
-  }
-
-
-/* --------------Editable Text Field Custom ------------*/
-  Widget personalInfoDynamicTitle(
-      {
-      required BuildContext context,  
-      required String title,
-      required String hintTextField,
-      required TextEditingController controller,
-      required TextInputType textInputType,
-      int? maxLength,
-      }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        mediumCustomSizedBox(context),
-        Text( 
-          title,
-          style: mediumTextStyle(context).copyWith(letterSpacing: 0.2),
-        ),
-        smallCustomSizedBox(context),
-        Container(
-          height: 45,
-          decoration: BoxDecoration(
-                       color: kLightLavengerGrayColor,
-           // border: Border.all(color: kPrimaryColor, width: 1),
-            borderRadius: BorderRadius.circular(9),
-          ),
-          child: TextFormField(
-            controller: controller,
-            style: const TextStyle(color: kBlackTextColor, fontSize: 17),
-            keyboardType: textInputType,
-            cursorColor: kPrimaryColor,
-            maxLength: maxLength ?? 4 ,
-            
-            decoration: InputDecoration(
-              hintText: hintTextField,
-              hintStyle: mediumTextStyle(context).copyWith(color: kDarkGray),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-
 /* -------------- Primary Btn --------------*/
-Widget primaryBtn({required BuildContext context,required Function() onTap,required String btnText,double? vertical,Color? btnColor,required bool isOutline }) {
+Widget primaryBtn(
+    {required BuildContext context,
+    required Function() onTap,
+    required String btnText,
+    double? vertical,
+    Color? btnColor,
+    required bool isOutline}) {
   return GestureDetector(
-                      onTap: onTap,
-                      child: Container(
-                        height: 45,
-                        margin: EdgeInsets.symmetric(vertical: vertical ?? 50),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color:isOutline ? Colors.white : (btnColor?? kPrimaryColor),
-                          border: Border.all(color: isOutline ? (btnColor?? kPrimaryColor) : Colors.white, width: isOutline ? 1 : 0.0),
-                        ),
-                        child: Center(
-                          child: Text(
-                            btnText,
-                            style: mediumTextStyle(context).copyWith(fontFamily : kQuickSandBold , color:isOutline ? (btnColor?? kPrimaryColor) : Colors.white,letterSpacing : 0.3),
-                          ),
-                        ),
-                      ),
-                    );
+    onTap: onTap,
+    child: Container(
+      height: 45,
+      margin: EdgeInsets.symmetric(vertical: vertical ?? 50),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: isOutline ? Colors.white : (btnColor ?? kPrimaryColor),
+        border: Border.all(
+            color: isOutline ? (btnColor ?? kPrimaryColor) : Colors.white,
+            width: isOutline ? 1 : 0.0),
+      ),
+      child: Center(
+        child: Text(
+          btnText,
+          style: mediumTextStyle(context).copyWith(
+              fontFamily: kQuickSandBold,
+              color: isOutline ? (btnColor ?? kPrimaryColor) : Colors.white,
+              letterSpacing: 0.3),
+        ),
+      ),
+    ),
+  );
 }
-
-
 
 /* --------------Custom AlertDialog -------------- */
 customInfoAlertDialog(
@@ -413,7 +445,7 @@ customInfoAlertDialog(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(kSecondaryColor),
                         ),
-                        onPressed: onTapBtn ?? (){},
+                        onPressed: onTapBtn ?? () {},
                         child: Text(
                           "$btnName",
                           style: mediumTextStyle(context)
@@ -444,7 +476,6 @@ defaultErrordialog(
       onTapBtn: onTapBtn ?? () => Navigator.pop(context));
 }
 
-
 /* --------------Circular Progress Indicator -------------- */
 customCircularProgress() {
   return CircularProgressIndicator(
@@ -454,7 +485,6 @@ customCircularProgress() {
   );
 }
 
-
 customsnackErrorBar(BuildContext context, String message) {
   return SnackBar(
     content: Row(
@@ -462,37 +492,37 @@ customsnackErrorBar(BuildContext context, String message) {
         Icon(
           Icons.error_outline,
           color: Colors.white,
-        ), 
+        ),
         const SizedBox(width: 10),
-        Expanded(child: Text("$message" , maxLines: 2)),
+        Expanded(child: Text("$message", maxLines: 2)),
       ],
     ),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: Colors.redAccent, 
-    padding:const EdgeInsets.all(15),
+    backgroundColor: Colors.redAccent,
+    padding: const EdgeInsets.all(15),
   );
 }
 
 customSnackSuccessBar(BuildContext context, String message) {
   return SnackBar(
-    content: Text("$message"),  
+    content: Text("$message"),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: kGreenColor, 
-    padding:const EdgeInsets.all(15),
+    backgroundColor: kGreenColor,
+    padding: const EdgeInsets.all(15),
   );
 }
 
 /*--------------Overlay loader --------------*/
 
-overlayLoader(BuildContext context){
-  return Loader.show(context,
-          isAppbarOverlay: true,
-          isBottomBarOverlay: true,
-          overlayColor: Colors.black38,
-          progressIndicator:customCircularProgress(),
-      );
+overlayLoader(BuildContext context) {
+  return Loader.show(
+    context,
+    isAppbarOverlay: true,
+    isBottomBarOverlay: true,
+    overlayColor: Colors.black38,
+    progressIndicator: customCircularProgress(),
+  );
 }
-
 
 //Progress Indicators
 linearLoader() {
@@ -506,37 +536,37 @@ linearLoader() {
       ),
     ),
   );
-} 
-
-// is null show icon text 
-
-  Widget isNullIcon({required BuildContext context , required String text , required IconData icon}) {
-    return Center(
-      child: Column(children: [
-        Text(text,
-            style: mediumLargeTextStyle(context)
-                .copyWith(fontWeight: FontWeight.w700)),
-        mediumCustomSizedBox(context),
-        Icon(
-          icon,
-          size: 25.0,
-          color: kPrimaryColor,
-        )
-      ]),
-    );
-  }
-
-Widget defaultDivider(){
-  return Container(
-                      height: 5,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                    );
 }
 
+// is null show icon text
+
+Widget isNullIcon(
+    {required BuildContext context,
+    required String text,
+    required IconData icon}) {
+  return Center(
+    child: Column(children: [
+      Text(text,
+          style: mediumLargeTextStyle(context)
+              .copyWith(fontWeight: FontWeight.w700)),
+      mediumCustomSizedBox(context),
+      Icon(
+        icon,
+        size: 25.0,
+        color: kPrimaryColor,
+      )
+    ]),
+  );
+}
+
+Widget defaultDivider() {
+  return Container(
+    height: 5,
+    width: 50,
+    decoration: BoxDecoration(
+        color: kPrimaryColor, borderRadius: BorderRadius.circular(10)),
+  );
+}
 
 class BorderPainter extends CustomPainter {
   @override
@@ -571,40 +601,39 @@ class BorderPainter extends CustomPainter {
   bool shouldRebuildSemantics(BorderPainter oldDelegate) => false;
 }
 
-  Widget profileTiles(
-      {required BuildContext context,
-        required String title,
-      required IconData icon,
-      required Function() onTap}) {
-    return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: kScreenMarginHorizontal(context)),
-      child: Column(
-        children: [
-          ListTile(
-            onTap: onTap,
-            leading: CircleAvatar(
-                maxRadius: isMobile(context) ? 16 : 18,
-                backgroundColor: kSecondaryColor,
-                child: Center(
-                    child: Icon(
-                  icon,
-                  color: kPrimaryColor,
-                  size: 16,
-                ))),
-            title: Text(
-              title,
-              style: const TextStyle(
-                fontFamily: kMuktaRegular,
-              ),
-            ),
-            trailing: const Icon(
-              Icons.arrow_right_rounded,
-              color: kPrimaryColor,
+Widget profileTiles(
+    {required BuildContext context,
+    required String title,
+    required IconData icon,
+    required Function() onTap}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: kScreenMarginHorizontal(context)),
+    child: Column(
+      children: [
+        ListTile(
+          onTap: onTap,
+          leading: CircleAvatar(
+              maxRadius: isMobile(context) ? 16 : 18,
+              backgroundColor: kSecondaryColor,
+              child: Center(
+                  child: Icon(
+                icon,
+                color: kPrimaryColor,
+                size: 16,
+              ))),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontFamily: kMuktaRegular,
             ),
           ),
-          smallCustomSizedBox(context),
-        ],
-      ),
-    );
-  }
+          trailing: const Icon(
+            Icons.arrow_right_rounded,
+            color: kPrimaryColor,
+          ),
+        ),
+        smallCustomSizedBox(context),
+      ],
+    ),
+  );
+}

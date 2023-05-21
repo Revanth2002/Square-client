@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:client/apis/auth.dart';
+import 'package:client/apis/authapi.dart';
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/home/home.dart';
 
@@ -128,6 +128,7 @@ class _OtpPageState extends State<OtpPage> {
                 ),
                 // maxLength: 10,
                 ),  
+                      ),
                         
                         //  TextFormField(
                         //   controller: _otpController,
@@ -147,7 +148,7 @@ class _OtpPageState extends State<OtpPage> {
                         //         vertical: 6, horizontal: 8),
                         //   ),
                         // ),
-                      ),
+                      
                       /*
                       Container(
                         height: 45,

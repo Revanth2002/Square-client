@@ -52,11 +52,12 @@ class DynamicSearch extends StatefulWidget {
   final double? radius;
   final TextEditingController controller;
   final Function(String) performSearch;
+  final String placeholder;
   const DynamicSearch(
       {Key? key,
       this.radius,
       required this.controller,
-      required this.performSearch})
+      required this.performSearch, required this.placeholder})
       : super(key: key);
 
   @override
@@ -72,7 +73,7 @@ class _DynamicSearchState extends State<DynamicSearch> {
         height: isMobile(context) ? 45 : 50,
         child: CupertinoTextField(
           controller: widget.controller,
-          placeholder: "Search people",
+          placeholder:widget.placeholder,
           placeholderStyle: TextStyle(
               color: kDarkGray,
               fontFamily: kQuickSandRegular,

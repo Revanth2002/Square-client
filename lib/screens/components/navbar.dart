@@ -38,7 +38,10 @@ class CommonNavbar extends StatelessWidget {
         children: [
           if(isBack == true) GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Icon(Icons.arrow_back,color: kBlackTextColor,size: isMobile(context) ? 19 : 23,)),
+            child: Padding(
+              padding: const EdgeInsets.only(top:14.0),
+              child: Icon(Icons.arrow_back,color: kBlackTextColor,size: isMobile(context) ? 19 : 23,),
+            )),
           RotatedBox(quarterTurns: 1,child: mediumCustomSizedBox(context),),
           if(title != null)Text(
                  title ?? "",
@@ -56,7 +59,7 @@ class CommonNavbar extends StatelessWidget {
 commonNavbar({required BuildContext context,required bool isBack,String? title}) {
   return PreferredSize(
         child: CommonNavbar(isBack: isBack,title: title,),
-        preferredSize: Size.fromHeight(isMobile(context) ? 45 : largeTablet(context) ? 55 :  60
+        preferredSize: Size.fromHeight(isMobile(context) ? 50 : largeTablet(context) ? 55 :  60
         ));
 }
 

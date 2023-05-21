@@ -1,3 +1,4 @@
+import 'package:client/apis/setupapi.dart';
 import 'package:client/helpers/headers.dart';
 
 class AddCardPage extends StatefulWidget {
@@ -30,18 +31,24 @@ class _AddCardPageState extends State<AddCardPage> {
     super.initState();
   }
 
+  final SetupPinAPI _setupPinAPI = SetupPinAPI();
+
+  _postNewCardSetup({required BuildContext context,required String cardNumber,required String expiryMonth,required String cardCvv,required String cardHolder})async{
+    return _setupPinAPI.postAddCard(context: context, cardNumber: cardNumber, expiryMonth: expiryMonth, cardCvv: cardCvv, cardHolder: cardHolder);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: commonNavbar(context: context, isBack: true),
-      body: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: SafeArea(
+      body: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
             child: Column(
               children: <Widget>[
                 Container(
@@ -77,9 +84,11 @@ class _AddCardPageState extends State<AddCardPage> {
                   obscureCardCvv: true,
                   isHolderNameVisible: true,
                   cardBgColor: Colors.white,
-                  backgroundImage: 'assets/images/cardbg.png',
+                  // backgroundImage: 'assets/images/cardbg.png',
+                  backgroundNetworkImage:
+                      "https://www.cardexpert.in/wp-content/uploads/2022/02/axis-atlas-banner.png",
                   isSwipeGestureEnabled: true,
-                  
+
                   onCreditCardWidgetChange:
                       (CreditCardBrand creditCardBrand) {},
                   customCardTypeIcons: <CustomCardTypeIcon>[
@@ -163,7 +172,7 @@ class _AddCardPageState extends State<AddCardPage> {
                             prefixIcon: const Icon(Icons.credit_card),
                           ),
                           expiryDateDecoration: InputDecoration(
-                           hintStyle: const TextStyle(color: kDimGray),
+                            hintStyle: const TextStyle(color: kDimGray),
                             labelStyle: const TextStyle(color: kDimGray),
                             focusedBorder: border,
                             enabledBorder: border,
@@ -197,9 +206,14 @@ class _AddCardPageState extends State<AddCardPage> {
                           onCreditCardModelChange: onCreditCardModelChange,
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: kDefaultScreenPaddingHorizontal(context)),
-                          child: primaryBtn(context: context, onTap: _onValidate, btnText: "Add Card", isOutline: false)),
-                       
+                            padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    kDefaultScreenPaddingHorizontal(context)),
+                            child: primaryBtn(
+                                context: context,
+                                onTap: _onValidate,
+                                btnText: "Add Card",
+                                isOutline: false)),
                       ],
                     ),
                   ),
@@ -214,9 +228,32 @@ class _AddCardPageState extends State<AddCardPage> {
 
   void _onValidate() {
     if (formKey.currentState!.validate()) {
-      print('valid!');
+      if(cardHolderName.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter card holder name'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }else{
+        //remove spaces in cardnumber
+        cardNumber = cardNumber.replaceAll(' ', '');
+        overlayLoader(context);
+        _postNewCardSetup(context: context, cardNumber: cardNumber, expiryMonth: expiryDate, cardCvv: cvvCode, cardHolder: cardHolderName);
+      }
+      //Print all the data
+      print('Card Number: ' + cardNumber);
+      print('Expiry Date: ' + expiryDate);
+      print('Card Holder Name: ' + cardHolderName);
+      print('CVV: ' + cvvCode);
     } else {
       print('invalid!');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter card details'),
+            backgroundColor: Colors.red,
+          ),
+        );
     }
   }
 

@@ -1,4 +1,4 @@
-import 'package:client/apis/auth.dart';
+import 'package:client/apis/authapi.dart';
 import 'package:client/helpers/headers.dart';
 import 'package:client/screens/auth/otppage.dart';
 import 'package:client/screens/auth/registerpage.dart';

@@ -14,3 +14,7 @@ const String searchpeoplepage = "/searchpeoplepage";
 const String searchdisplaypage = "/searchdisplaypage";
 const String passwordpage = "/passwordpage";
 const String registerpage = "/registerpage";
+const String sendmoneypage = "/sendmoneypage";
+const String paypinpage = "/paypinpage";
+const String scanqrpage = "/scanqrpage";
+const String checkbalance = "/checkbalance";
