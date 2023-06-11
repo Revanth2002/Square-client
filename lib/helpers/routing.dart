@@ -1,10 +1,11 @@
 /*List of all IP Adddresses and end points */
 
-const String PROTOCOL = "http";
+const String PROTOCOL = "https";
 const String PORT = "8000";
 // const String DOMAIN = "192.168.1.7"; // acer
-const String DOMAIN = "192.168.1.8";  // lenovo
-const String BASE_URL = "$PROTOCOL://$DOMAIN:$PORT/api/v1";
+const String DOMAIN = "pangea-server.vercel.app";  // lenovo
+const String BASE_URL = "$PROTOCOL://$DOMAIN/api/v1";
+// const String BASE_URL = "$PROTOCOL://$DOMAIN:$PORT/api/v1";
 
 
 /*-------Auth API ------- */
