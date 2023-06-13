@@ -7,7 +7,7 @@
 
 
    <application
-        android:label="client"
+        android:label="zeropay"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

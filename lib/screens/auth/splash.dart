@@ -28,7 +28,7 @@ class SplashInfo extends StatelessWidget {
                   children: <Widget>[
                     Center(
                       child: Image.asset(
-                        'assets/images/logininfo.png',
+                        'assets/images/logo.png',
                         height: size.height * 0.4,
                         // width:size.width  ,
                       ),

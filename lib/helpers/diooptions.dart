@@ -8,9 +8,9 @@ const flutterSecureStorage = FlutterSecureStorage();
 
 //BaseOptions
 Options dioOptions = Options(
-    receiveTimeout: 10 * 1000,
+    receiveTimeout: 50 * 1000,
     receiveDataWhenStatusError: true,
-    sendTimeout: 10 * 1000,
+    sendTimeout: 50 * 1000,
     headers: {
       'Content-Type': "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -19,9 +19,9 @@ Options dioOptions = Options(
 
 //BaseOptions
 Options dioInitialOptions = Options(
-    receiveTimeout: 10 * 1000,
+    receiveTimeout: 50 * 1000,
     receiveDataWhenStatusError: true,
-    sendTimeout: 10 * 1000,
+    sendTimeout: 50 * 1000,
     headers: {
       'Content-Type': "application/json",
       "Access-Control-Allow-Origin": "*",

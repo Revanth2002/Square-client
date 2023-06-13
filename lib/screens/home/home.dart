@@ -36,10 +36,10 @@ class _HomePageState extends State<HomePage> {
   bool isCardAdded = true;
 
   final transferMoneyList = [
-    {"id": "1", "name": "To Mobile Number", "img": "assets/images/send.png"},
+    {"id": "1", "name": "To Mobile Number", "img": "assets/images/mobile.png"},
     {"id": "2", "name": "To People", "img": "assets/images/contactless.png"},
     {"id": "3", "name": "Scan to Pay", "img": "assets/images/qr.png"},
-    {"id": "4", "name": "Transactions", "img": "assets/images/bank.png"}
+    {"id": "4", "name": "Transactions", "img": "assets/images/send.png"}
   ];
 
   Future? _homeScreenFuture;

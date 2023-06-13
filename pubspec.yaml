@@ -82,6 +82,7 @@ flutter:
     - assets/images/mastercard.png
     - assets/images/cardbg.png  
     - assets/images/profile.png
+    - assets/images/logo.png
 
   fonts:
     - family: MuktaRegular

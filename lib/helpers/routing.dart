@@ -1,10 +1,12 @@
 /*List of all IP Adddresses and end points */
 
+// const String PROTOCOL = "https";
 const String PROTOCOL = "http";
 const String PORT = "8000";
 // const String DOMAIN = "192.168.1.7"; // acer
-const String DOMAIN = "192.168.1.8";  // lenovo
-const String BASE_URL = "$PROTOCOL://$DOMAIN:$PORT/api/v1";
+// const String DOMAIN = "pangea-server.vercel.app";  // lenovo
+const String DOMAIN = "165.22.209.61:8000";  // lenovo
+const String BASE_URL = "$PROTOCOL://$DOMAIN/api/v1";
 
 
 /*-------Auth API ------- */
@@ -33,3 +35,4 @@ const String SCAN_QR_CHECKER = "$BASE_URL/scan-qr/";
 const String SEARCH_URL = "$BASE_URL/search/";
 
 const String CHECK_BALANCE_URL = "$BASE_URL/check-balance/";
+
